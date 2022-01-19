@@ -930,13 +930,119 @@ module.exports = g;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modules_Slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/Slider */ "./src/js/modules/Slider.js");
+/* harmony import */ var _modules_Player__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/Player */ "./src/js/modules/Player.js");
+/* harmony import */ var _modules_Slider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/Slider */ "./src/js/modules/Slider.js");
+
 
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("LOADED");
-  var slider = new _modules_Slider__WEBPACK_IMPORTED_MODULE_0__["default"](".page", ".next", '[data-link-logo="true"]');
+  var slider = new _modules_Slider__WEBPACK_IMPORTED_MODULE_1__["default"](".page", ".next", '[data-link-logo="true"]');
   slider.render();
+  var player = new _modules_Player__WEBPACK_IMPORTED_MODULE_0__["default"]("frame", '.showup [data-play-btn="true"]', ".overlay");
+  player.init();
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/Player.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/Player.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Player =
+/*#__PURE__*/
+function () {
+  function Player(playerSelector, btnsSelector, overlaySelector) {
+    _classCallCheck(this, Player);
+
+    this.playerSelector = playerSelector;
+    this.player = null;
+    this.btns = document.querySelectorAll(btnsSelector);
+    this.overlay = document.querySelector(overlaySelector);
+    this.overlayClose = this.overlay.querySelector(".close");
+  }
+
+  _createClass(Player, [{
+    key: "handleBtns",
+    value: function handleBtns() {
+      var _this = this;
+
+      this.btns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          _this.overlay.style.display = "flex";
+        });
+      });
+    }
+  }, {
+    key: "handleOverlay",
+    value: function handleOverlay() {
+      var _this2 = this;
+
+      this.overlayClose.addEventListener("click", function () {
+        _this2.closeOverlayAndPausePlayer(_this2.overlay, _this2.player);
+      });
+      this.overlay.addEventListener("click", function (e) {
+        if (e.target && e.target === _this2.overlay) {
+          _this2.closeOverlayAndPausePlayer(_this2.overlay, _this2.player);
+        }
+      });
+    }
+  }, {
+    key: "closeOverlayAndPausePlayer",
+    value: function closeOverlayAndPausePlayer(overlay, player) {
+      if (player) {
+        player.pauseVideo();
+      }
+
+      overlay.style.display = "none";
+    }
+  }, {
+    key: "createPlayer",
+    value: function createPlayer(url) {
+      this.player = new YT.Player(this.playerSelector, {
+        height: "100%",
+        width: "100%",
+        videoId: "".concat(url)
+      });
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      var _this3 = this;
+
+      if (typeof YT == "undefined" || typeof YT.Player == "undefined") {
+        var tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName("script")[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        window.onYouTubePlayerAPIReady = function () {
+          _this3.createPlayer("vZ4Sne0wdxY");
+        };
+      }
+
+      this.handleBtns();
+      this.handleOverlay();
+    }
+  }]);
+
+  return Player;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (Player);
 
 /***/ }),
 
@@ -1001,10 +1107,26 @@ function () {
   }, {
     key: "showSlide",
     value: function showSlide(slideNum) {
+      var _this2 = this;
+
       this.slides.forEach(function (slide) {
         slide.style.display = "none";
       });
       this.slides[slideNum - 1].style.display = "block";
+
+      try {
+        if (this.slides[slideNum - 1] === this.slideHanson) {
+          this.hansonTimeout = setTimeout(function () {
+            _this2.hanson.style.opacity = "1";
+
+            _this2.hanson.classList.add("slideInUp");
+          }, 3000);
+        } else if (this.hansonTimeout) {
+          clearTimeout(this.hansonTimeout);
+        }
+      } catch (err) {
+        console.warn(err);
+      }
     }
   }, {
     key: "changeSlide",
@@ -1015,17 +1137,27 @@ function () {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.btns.forEach(function (btn) {
         btn.addEventListener("click", function (e) {
           e.preventDefault();
 
-          _this2.changeSlide(1);
+          _this3.changeSlide(1);
         });
       });
       this.showSlide(this.currentSlideNumber);
       this.toBegin();
+
+      try {
+        this.hanson = this.page.querySelector("[data-hanson='true']");
+        this.slideHanson = this.page.querySelector("[data-hanson-parent='true']");
+        this.hansonTimeout = null;
+        this.hanson.style.opacity = "0";
+        this.hanson.classList.add("animated");
+      } catch (err) {
+        console.warn(err);
+      }
     }
   }]);
 
