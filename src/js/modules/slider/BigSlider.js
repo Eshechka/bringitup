@@ -1,10 +1,12 @@
-class Slider {
-  constructor(pageSelector, btnsSelector, clickToBeginSelector) {
-    this.page = document.querySelector(pageSelector);
-    this.slides = this.page.children;
-    this.beginizers = document.querySelectorAll(clickToBeginSelector);
-    this.btns = this.page.querySelectorAll(btnsSelector);
-    this.currentSlideNumber = 1;
+import Slider from "./Slider";
+
+class BigSlider extends Slider {
+  constructor({containerSelector, nextSelector, clickToBeginSelector}) {
+    super({
+      containerSelector: containerSelector,
+      nextSelector: nextSelector,
+      clickToBeginSelector: clickToBeginSelector,
+    });
   }
 
   toBegin() {
@@ -51,19 +53,22 @@ class Slider {
     this.showSlide(this.currentSlideNumber);
   }
 
-  render() {
-    this.btns.forEach((btn) => {
-      btn.addEventListener("click", (e) => {
+  init() {
+    this.next.forEach((nextBtn) => {
+      nextBtn.addEventListener("click", (e) => {
         e.preventDefault();
         this.changeSlide(1);
       });
     });
+
     this.showSlide(this.currentSlideNumber);
     this.toBegin();
 
     try {
-      this.hanson = this.page.querySelector("[data-hanson='true']");
-      this.slideHanson = this.page.querySelector("[data-hanson-parent='true']");
+      this.hanson = this.container.querySelector("[data-hanson='true']");
+      this.slideHanson = this.container.querySelector(
+        "[data-hanson-parent='true']"
+      );
       this.hansonTimeout = null;
       this.hanson.style.opacity = "0";
       this.hanson.classList.add("animated");
@@ -73,4 +78,4 @@ class Slider {
   }
 }
 
-export default Slider;
+export default BigSlider;
