@@ -1,3 +1,4 @@
+import Difference from "./modules/Difference";
 import Player from "./modules/Player";
 import BigSlider from "./modules/slider/BigSlider";
 import MiniSlider from "./modules/slider/MiniSlider";
@@ -41,4 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ".overlay"
   );
   player.init();
+
+  new Difference(".officerold", ".officer__card-item", ".plus").init();
+  new Difference(".officernew", ".officer__card-item", ".plus").init();
 });
