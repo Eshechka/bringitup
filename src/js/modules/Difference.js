@@ -1,12 +1,14 @@
 class Difference {
   constructor(containerSelector, itemSelector, btnPlusSelector) {
-    this.container = document.querySelector(containerSelector);
-    this.items = this.container.querySelectorAll(itemSelector);
-    this.controlItem = this.container.querySelector(
-      '[data-control-item="true"]'
-    );
-    this.plus = this.container.querySelector(btnPlusSelector);
-    this.visibleItems = 0;
+    try {
+      this.container = document.querySelector(containerSelector);
+      this.items = this.container.querySelectorAll(itemSelector);
+      this.controlItem = this.container.querySelector(
+        '[data-control-item="true"]'
+      );
+      this.plus = this.container.querySelector(btnPlusSelector);
+      this.visibleItems = 0;
+    } catch (err) {}
   }
 
   hideItems() {
@@ -29,9 +31,10 @@ class Difference {
   }
 
   init() {
-    this.hideItems();
-
-    this.plus.addEventListener("click", () => this.showNextItem());
+    try {
+      this.hideItems();
+      this.plus.addEventListener("click", () => this.showNextItem());
+    } catch (err) {}
   }
 }
 

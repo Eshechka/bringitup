@@ -1,4 +1,7 @@
 import Difference from "./modules/Difference";
+import Form from "./modules/Form";
+import Mask from "./modules/Mask";
+import NoRussianSigns from "./modules/NoRussianSigns";
 import Player from "./modules/Player";
 import BigSlider from "./modules/slider/BigSlider";
 import MiniSlider from "./modules/slider/MiniSlider";
@@ -36,13 +39,27 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   sliderMiniFeed.init();
 
-  const player = new Player(
+  const sliderModulesAside = new BigSlider({
+    containerSelector: ".moduleapp",
+    nextSelector: [".sidecontrol .next", ".module__wrapper .nextmodule"],
+    prevSelector: ".module__wrapper .prevmodule",
+    clickToBeginSelector: '[data-link-logo="true"]',
+  });
+  sliderModulesAside.init();
+
+  new Player("frame", '.showup [data-play-btn="true"]', ".overlay").init();
+  new Player(
     "frame",
-    '.showup [data-play-btn="true"]',
+    '.module__video [data-play-btn="true"]',
     ".overlay"
-  );
-  player.init();
+  ).init();
 
   new Difference(".officerold", ".officer__card-item", ".plus").init();
   new Difference(".officernew", ".officer__card-item", ".plus").init();
+
+  new Form(".form").init();
+
+  new Mask("#phone").init();
+
+  new NoRussianSigns('[name="email"]').init();
 });

@@ -39,30 +39,32 @@ class MniSlider extends Slider {
   }
 
   init() {
-    this.next.forEach((nextBtn) => {
-      nextBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        this.changeSlide(1);
+    try {
+      this.next.forEach((nextBtn) => {
+        nextBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          this.changeSlide(1);
+        });
       });
-    });
-    this.prev.forEach((prevBtn) => {
-      prevBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        this.changeSlide(-1);
+      this.prev.forEach((prevBtn) => {
+        prevBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          this.changeSlide(-1);
+        });
       });
-    });
 
-    this.container.style.cssText = `
-      display: flex;
-      overflow: hidden; 
-      align-items: flex-start`;
+      this.container.style.cssText = `
+        display: flex;
+        overflow: hidden; 
+        align-items: flex-start`;
 
-    this.slides.forEach((slide) => {
-      slide.style.cssText = `
-        flex-shrink: 0; `;
-    });
+      this.slides.forEach((slide) => {
+        slide.style.cssText = `
+          flex-shrink: 0; `;
+      });
 
-    this.showSlide();
+      this.showSlide();
+    } catch (err) {}
   }
 }
 
