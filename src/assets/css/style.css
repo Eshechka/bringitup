@@ -51,6 +51,7 @@ a:active {
   font-size: 13px;
   border: none;
   cursor: pointer;
+  display: inline-block;
 }
 .play {
   display: flex;
@@ -488,6 +489,7 @@ a:active {
   top: 0;
   right: 0;
   background-color: #fff;
+  opacity: 0.9;
 }
 .showup__content-explore {
   width: 250px;
