@@ -176,6 +176,9 @@ a:active {
   display: none;
   margin-top: 20px;
 }
+.msg.active {
+  display: block;
+}
 .plus {
   position: relative;
   width: 28px;
@@ -1664,6 +1667,7 @@ a:active {
   display: flex;
   justify-content: center;
   height: 48px;
+  cursor: pointer;
 }
 .module__info-book .download svg {
   -webkit-transform: translateY(2px);

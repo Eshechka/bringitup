@@ -1,8 +1,10 @@
 import Difference from "./modules/Difference";
+import Download from "./modules/Download";
 import Form from "./modules/Form";
 import Mask from "./modules/Mask";
 import NoRussianSigns from "./modules/NoRussianSigns";
 import Player from "./modules/Player";
+import ShowMore from "./modules/ShowMore";
 import BigSlider from "./modules/slider/BigSlider";
 import MiniSlider from "./modules/slider/MiniSlider";
 
@@ -62,4 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
   new Mask("#phone").init();
 
   new NoRussianSigns('[name="email"]').init();
+
+  new ShowMore(".module__info .plus").init();
+
+  new Download(".module__info-book .download").init();
 });
